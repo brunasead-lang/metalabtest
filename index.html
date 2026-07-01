@@ -1,20 +1,188 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-  <meta charset="UTF-8">
-  <script src="https://unpkg.com/@rive-app/canvas"></script>
-</head>
-<body style="margin:0;overflow:hidden;background:transparent;">
-<canvas id="canvas" width="auto" height="auto"></canvas>
-<script>
-const r = new rive.Rive({
-  src: "labs_test.riv",
-  canvas: document.getElementById("canvas"),
-  autoplay: true,
-  stateMachines: "State Machine 1"
-});
+  <meta charset="UTF-8" />
+  <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
 
-</script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #111111;
+      color: #f1f1f1;
+      font-family: Inter, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 980px;
+      padding: 32px;
+    }
+
+    .card {
+      background: #282828;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .rive-box {
+      width: 100%;
+      height: 360px;
+      background: #1b1b1b;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    canvas {
+      width: 640px;
+      height: 240px;
+      display: block;
+    }
+
+    .controls {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #bdbdbd;
+    }
+
+    .colors {
+      display: flex;
+      gap: 10px;
+    }
+
+    .color-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      cursor: pointer;
+    }
+
+    input[type="range"] {
+      width: 260px;
+    }
+
+    .width-value {
+      font-size: 13px;
+      color: #ffffff;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="card">
+      <div class="rive-box">
+        <canvas id="canvas"></canvas>
+      </div>
+
+      <div class="controls">
+        <div class="control-group">
+          <label>Shape color</label>
+          <div class="colors">
+            <button class="color-btn" style="background:#FFB429" data-color="#FFB429"></button>
+            <button class="color-btn" style="background:#F1F1F1" data-color="#F1F1F1"></button>
+            <button class="color-btn" style="background:#FF8ACB" data-color="#FF8ACB"></button>
+            <button class="color-btn" style="background:#72E06A" data-color="#72E06A"></button>
+            <button class="color-btn" style="background:#4DA3FF" data-color="#4DA3FF"></button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Artboard width</label>
+          <input id="widthSlider" type="range" min="320" max="820" value="640" />
+          <div class="width-value">
+            Width: <span id="widthValue">640</span>px
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const widthSlider = document.getElementById("widthSlider");
+    const widthValue = document.getElementById("widthValue");
+
+    let shapeColorProperty = null;
+
+    const riveInstance = new rive.Rive({
+      src: "cta_click.riv",
+      canvas: canvas,
+      autoplay: true,
+      stateMachines: "State Machine 1",
+
+      layout: new rive.Layout({
+        fit: rive.Fit.Layout,
+        alignment: rive.Alignment.Center
+      }),
+
+      onLoad: () => {
+        riveInstance.resizeDrawingSurfaceToCanvas();
+
+        const viewModel = riveInstance.viewModelByName("ShapeClass");
+        const viewModelInstance = viewModel.defaultInstance();
+
+        riveInstance.bindViewModelInstance(viewModelInstance);
+
+        shapeColorProperty = viewModelInstance.color("shapeColor");
+      }
+    });
+
+    function resizeCanvas(width) {
+      canvas.style.width = width + "px";
+      widthValue.textContent = width;
+
+      requestAnimationFrame(() => {
+        riveInstance.resizeDrawingSurfaceToCanvas();
+      });
+    }
+
+    function hexToRiveColor(hex) {
+      const cleanHex = hex.replace("#", "");
+      return parseInt("FF" + cleanHex, 16);
+    }
+
+    document.querySelectorAll(".color-btn").forEach((button) => {
+      button.addEventListener("click", () => {
+        const color = button.dataset.color;
+
+        if (shapeColorProperty) {
+          shapeColorProperty.value = hexToRiveColor(color);
+        }
+      });
+    });
+
+    widthSlider.addEventListener("input", (event) => {
+      resizeCanvas(event.target.value);
+    });
+
+    resizeCanvas(widthSlider.value);
+  </script>
 </body>
 </html>
