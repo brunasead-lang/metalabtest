@@ -129,12 +129,7 @@
 
     function hexToRiveColor(hex) {
       const clean = hex.replace("#", "");
-
-      const red = clean.substring(0, 2);
-      const green = clean.substring(2, 4);
-      const blue = clean.substring(4, 6);
-
-      return Number("0xFF" + blue + green + red);
+      return Number("0xFF" + clean);
     }
 
     function updateColor(hex) {
@@ -148,6 +143,7 @@
 
       canvas.style.width = width + "px";
       canvas.style.height = "65px";
+
       widthValue.textContent = width;
 
       requestAnimationFrame(() => {
