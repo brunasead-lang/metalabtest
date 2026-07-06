@@ -72,24 +72,21 @@
   </main>
 
   <script>
-    const canvas = document.getElementById("canvas");
+const r = new rive.Rive({
+  src: "stickers.riv",
+  canvas: canvas,
+  artboard: "refModal Stickers",
+  autoplay: true,
 
-    const r = new rive.Rive({
-      src: "stickers.riv",
-      canvas: canvas,
-      artboard: "refModal Stickers",
-      autoplay: true,
-      stateMachines: "State Machine 1",
+  layout: new rive.Layout({
+    fit: rive.Fit.Contain,
+    alignment: rive.Alignment.Center
+  }),
 
-      layout: new rive.Layout({
-        fit: rive.Fit.Fill,
-        alignment: rive.Alignment.Center
-      }),
-
-      onLoad: () => {
-        r.resizeDrawingSurfaceToCanvas();
-      }
-    });
+  onLoad: () => {
+    r.resizeDrawingSurfaceToCanvas();
+  }
+});
   </script>
 </body>
 </html>
