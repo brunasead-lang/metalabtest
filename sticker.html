@@ -15,17 +15,10 @@
       margin: 0;
       min-height: 100vh;
       background: #111111;
-      font-family: Inter, Arial, sans-serif;
-      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .page {
-      width: 100%;
-      max-width: 980px;
-      padding: 32px;
+      font-family: Inter, Arial, sans-serif;
     }
 
     .card {
@@ -35,21 +28,12 @@
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
     }
 
-    .preview {
-      background: #1b1b1b;
-      border-radius: 20px;
-      min-height: 720px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .rive-mask {
+    .rive-wrap {
       width: 393px;
       height: 614px;
       border-radius: 15px;
       overflow: hidden;
+      background: #1b1b1b;
     }
 
     canvas {
@@ -61,32 +45,19 @@
 </head>
 
 <body>
-  <main class="page">
-    <section class="card">
-      <div class="preview">
-        <div class="rive-mask">
-          <canvas id="canvas" width="393" height="614"></canvas>
-        </div>
-      </div>
-    </section>
-  </main>
+  <div class="card">
+    <div class="rive-wrap">
+      <canvas id="canvas" width="393" height="614"></canvas>
+    </div>
+  </div>
 
   <script>
-const r = new rive.Rive({
-  src: "stickers.riv",
-  canvas: canvas,
-  artboard: "refModal Stickers",
-  autoplay: true,
-
-  layout: new rive.Layout({
-    fit: rive.Fit.Contain,
-    alignment: rive.Alignment.Center
-  }),
-
-  onLoad: () => {
-    r.resizeDrawingSurfaceToCanvas();
-  }
-});
+    const r = new rive.Rive({
+      src: "stickers.riv",
+      canvas: document.getElementById("canvas"),
+      autoplay: true,
+      stateMachines: "State Machine 1"
+    });
   </script>
 </body>
 </html>
