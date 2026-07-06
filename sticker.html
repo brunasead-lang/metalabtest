@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sticker Demo</title>
+
+  <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #111111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Inter, Arial, sans-serif;
+      color: white;
+    }
+
+    .card {
+      width: 900px;
+      max-width: 90vw;
+      background: #282828;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .preview {
+      background: #1b1b1b;
+      border-radius: 20px;
+      height: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .rive-frame {
+      width: 393px;
+      height: 614px;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 393px;
+      height: 614px;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="preview">
+      <div class="rive-frame">
+        <canvas id="canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+
+    const r = new rive.Rive({
+      src: "stickers.riv",
+      canvas: canvas,
+      autoplay: true,
+      stateMachines: "State Machine 1",
+
+      layout: new rive.Layout({
+        fit: rive.Fit.Layout,
+        alignment: rive.Alignment.Center
+      }),
+
+      onLoad: () => {
+        r.resizeDrawingSurfaceToCanvas();
+      }
+    });
+  </script>
+</body>
+</html>
