@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Sticker Demo</title>
+  <title>Sticker Interaction</title>
 
   <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
 
@@ -15,33 +15,51 @@
       margin: 0;
       min-height: 100vh;
       background: #111111;
+      color: #ffffff;
+      font-family: Inter, Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: Inter, Arial, sans-serif;
-      color: white;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1080px;
+      padding: 32px;
     }
 
     .card {
-      width: 900px;
-      max-width: 90vw;
       background: #282828;
       border-radius: 20px;
       padding: 40px;
       box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+      text-align: center;
     }
 
-    .preview {
+    h1 {
+      margin: 0 0 8px;
+      font-size: 40px;
+      line-height: 1.1;
+    }
+
+    p {
+      margin: 0 0 32px;
+      color: #bdbdbd;
+      font-size: 18px;
+    }
+
+    .rive-frame {
+      width: 100%;
+      min-height: 720px;
       background: #1b1b1b;
       border-radius: 20px;
-      height: 760px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
     }
 
-    .rive-frame {
+    .rive-crop {
       width: 393px;
       height: 614px;
       border-radius: 15px;
@@ -53,17 +71,30 @@
       height: 614px;
       display: block;
     }
+
+    .footer {
+      margin-top: 24px;
+      color: #8f8f8f;
+      font-size: 14px;
+    }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <div class="preview">
+  <main class="page">
+    <section class="card">
+      <h1>Sticker Interaction</h1>
+      <p>Hover to pick a sticker. Click anywhere to place it.</p>
+
       <div class="rive-frame">
-        <canvas id="canvas"></canvas>
+        <div class="rive-crop">
+          <canvas id="canvas"></canvas>
+        </div>
       </div>
-    </div>
-  </div>
+
+      <div class="footer">Made with Rive</div>
+    </section>
+  </main>
 
   <script>
     const canvas = document.getElementById("canvas");
@@ -75,13 +106,17 @@
       stateMachines: "State Machine 1",
 
       layout: new rive.Layout({
-        fit: rive.Fit.Layout,
+        fit: rive.Fit.Contain,
         alignment: rive.Alignment.Center
       }),
 
       onLoad: () => {
         r.resizeDrawingSurfaceToCanvas();
       }
+    });
+
+    window.addEventListener("resize", () => {
+      r.resizeDrawingSurfaceToCanvas();
     });
   </script>
 </body>
